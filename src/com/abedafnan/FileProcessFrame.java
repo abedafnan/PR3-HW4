@@ -5,14 +5,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class FileProcessFrame extends JFrame implements ActionListener {
 
     private FileProcessPanel mainPanel;
+    private String filepath;
 
     public FileProcessFrame(String title) {
         super(title);
@@ -40,10 +38,17 @@ public class FileProcessFrame extends JFrame implements ActionListener {
         fileMenu.add(openItem);
         openItem.addActionListener(this);
         openItem.setActionCommand("open");
+
+        JMenuItem saveItem = new JMenuItem("Save", 'S');
+        fileMenu.add(saveItem);
+        saveItem.addActionListener(this);
+        saveItem.setActionCommand("save");
+
         JMenuItem closeItem = new JMenuItem("Close", 'C');
         fileMenu.add(closeItem);
         closeItem.addActionListener(this);
         closeItem.setActionCommand("close");
+
         JMenuItem ExitItem = new JMenuItem("Exit", 'x');
         fileMenu.add(ExitItem);
         ExitItem.addActionListener(this);
@@ -54,6 +59,7 @@ public class FileProcessFrame extends JFrame implements ActionListener {
         editMenu.add(fontItem);
         fontItem.addActionListener(this);
         fontItem.setActionCommand("font");
+
         JMenuItem colorItem = new JMenuItem("Color", 'l');
         editMenu.add(colorItem);
         colorItem.addActionListener(this);
@@ -69,10 +75,13 @@ public class FileProcessFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String actionCmd = e.getActionCommand();
+        String actionCmd = e.getActionCommand().toLowerCase();
         switch (actionCmd) {
             case "open":
-                openFile();
+                filepath = openFile();
+                break;
+            case "save":
+                saveFile(filepath);
                 break;
             case "close":
                 clearText();
@@ -89,7 +98,7 @@ public class FileProcessFrame extends JFrame implements ActionListener {
         }
     }
 
-    private void openFile() {
+    private String openFile() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Document", "txt");
@@ -97,9 +106,11 @@ public class FileProcessFrame extends JFrame implements ActionListener {
         int result = fileChooser.showOpenDialog(getParent());
         mainPanel.area.setEditable(true);
 
+        String path = "";
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
                 File selectedFile = fileChooser.getSelectedFile();
+                path = selectedFile.getPath();
                 FileReader fileReader = new FileReader(selectedFile);
                 BufferedReader reader = new BufferedReader(fileReader);
                 mainPanel.area.read(reader, "Opening a text file");
@@ -107,6 +118,34 @@ public class FileProcessFrame extends JFrame implements ActionListener {
                 mainPanel.area.setText("File Not Found!");
             }
         }
+
+        return path;
+    }
+
+    private void saveFile(String path) {
+        FileOutputStream outputStream = null;
+        PrintWriter printWriter = null;
+        try {
+            File newFile = new File(path);
+            outputStream = new FileOutputStream(newFile);
+            printWriter = new PrintWriter(outputStream);
+            printWriter.write(mainPanel.area.getText());
+            System.out.println("File Saved");
+
+        } catch (FileNotFoundException exception) {
+            JOptionPane.showMessageDialog(this,
+                    "Cannot Find Your File", "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+
+            try {
+                printWriter.close();
+                outputStream.close();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
+
+        }
+
     }
 
     private void clearText() {
