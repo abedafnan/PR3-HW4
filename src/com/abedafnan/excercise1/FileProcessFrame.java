@@ -1,4 +1,4 @@
-package com.abedafnan;
+package com.abedafnan.excercise1;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -10,7 +10,7 @@ import java.io.*;
 public class FileProcessFrame extends JFrame implements ActionListener {
 
     private FileProcessPanel mainPanel;
-    private String filepath;
+    private String filepath = "";
 
     public FileProcessFrame(String title) {
         super(title);
@@ -134,14 +134,14 @@ public class FileProcessFrame extends JFrame implements ActionListener {
 
         } catch (FileNotFoundException exception) {
             JOptionPane.showMessageDialog(this,
-                    "Cannot Find Your File", "Error", JOptionPane.ERROR_MESSAGE);
+                    "There's no file open", "Error", JOptionPane.ERROR_MESSAGE);
         } finally {
 
             try {
                 printWriter.close();
                 outputStream.close();
-            } catch (IOException exception) {
-                exception.printStackTrace();
+            } catch (Exception exception) {
+                System.out.println("An Error Occurred");
             }
 
         }

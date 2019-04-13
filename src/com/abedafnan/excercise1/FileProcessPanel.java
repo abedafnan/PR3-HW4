@@ -1,4 +1,4 @@
-package com.abedafnan;
+package com.abedafnan.excercise1;
 
 import javax.swing.*;
 import java.awt.*;
