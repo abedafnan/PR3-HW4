@@ -1,15 +1,9 @@
-package com.abedafnan.excercise2;
+package com.abedafnan.hw4.excercise2;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
 public class FileViewFx extends Application {

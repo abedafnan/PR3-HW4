@@ -1,12 +1,9 @@
-package com.abedafnan.excercise2;
+package com.abedafnan.hw4.excercise2;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.TextArea;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 

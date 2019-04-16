@@ -1,4 +1,4 @@
-package com.abedafnan.excercise5;
+package com.abedafnan.hw4.excercise5;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,8 +13,6 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.*;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 public class LoginController {
@@ -32,6 +30,8 @@ public class LoginController {
     PasswordField addPassField;
     @FXML
     Button addButton;
+    @FXML
+    Button cancelButton;
     @FXML
     VBox mainPanel;
     @FXML
