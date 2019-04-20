@@ -19,14 +19,18 @@ public class AccountFrame extends JFrame {
     JLabel balanceLabel;
 
     public AccountFrame(String title) {
+        // Setup the frame
         super(title);
         this.setSize(300, 200);
         this.setLocationRelativeTo(null);
+
+        // Setup the panels
         bottomPanel = new JPanel();
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         centerPanel = new JPanel(new GridLayout(3, 3, 10, 10));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 
+        // Setup the fields
         nameFiled = new JTextField(30);
         noField = new JTextField(30);
         balanceField = new JTextField(30);
@@ -40,6 +44,7 @@ public class AccountFrame extends JFrame {
         centerPanel.add(balanceLabel);
         centerPanel.add(balanceField);
 
+        // Setup the buttons and their actions
         writeButton = new JButton("Write");
         writeButton.addActionListener(new ActionListener() {
             @Override

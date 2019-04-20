@@ -13,18 +13,6 @@ public class Account implements Serializable {
         this.accBalance = accBalance;
     }
 
-    public int getAccNo() {
-        return accNo;
-    }
-
-    public String getAccName() {
-        return accName;
-    }
-
-    public double getAccBalance() {
-        return accBalance;
-    }
-
     @Override
     public String toString() {
         return new StringBuffer("Account No : ").append(this.accNo)
