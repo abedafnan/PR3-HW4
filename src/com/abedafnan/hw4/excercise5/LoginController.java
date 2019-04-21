@@ -12,7 +12,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import javax.swing.*;
+import javax.xml.bind.DatatypeConverter;
 import java.io.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 public class LoginController {
@@ -39,6 +42,9 @@ public class LoginController {
     @FXML
     VBox addPanel;
 
+    /**
+     * For testing use name: test, password: testtest
+     */
     public void login() {
         // Check if the name and password fields are empty
         if (nameField.getText().equals("") || passField.getText().equals("")) {
@@ -53,21 +59,14 @@ public class LoginController {
             FileInputStream inputStream = new FileInputStream(file);
             Scanner scanner = new Scanner(inputStream);
 
-//            MessageDigest md = null;
-//            try {
-//                md = MessageDigest.getInstance("MD5");
-//            } catch (NoSuchAlgorithmException e) {
-//                e.printStackTrace();
-//            }
-//            byte[] chars = md.digest("testPass".getBytes());
-//            System.out.println(chars);
+            String retrievedPass = getMD5Hash(passField.getText());
 
             while (scanner.hasNextLine()) {
                 String userInfo = scanner.nextLine();
                 String[] userInfoArray = userInfo.split(" ");
 
                 // Change the scene if the login info is correct
-                if (userInfoArray[0].equals(nameField.getText()) && userInfoArray[1].equals(passField.getText())) {
+                if (userInfoArray[0].equals(nameField.getText()) && userInfoArray[1].equals(retrievedPass)) {
                     Stage stage = (Stage) mainPanel.getScene().getWindow();
                     stage.setScene(loadScene("options.fxml"));
                     return;
@@ -94,7 +93,7 @@ public class LoginController {
         PrintWriter printWriter = null;
 
         String name = addNameField.getText();
-        String pass = addPassField.getText();
+        String pass = getMD5Hash(addPassField.getText());
         String content = "\n" + name + " " + pass;
         try {
             File file = new File("passes.txt");
@@ -105,8 +104,6 @@ public class LoginController {
             // Display dialog when the student is added
             JOptionPane.showMessageDialog(null,
                     "Your information is successfully added", "Success", JOptionPane.INFORMATION_MESSAGE);
-            // Go back to options scene
-            cancel();
 
         } catch (IOException exception) {
             exception.printStackTrace();
@@ -131,6 +128,28 @@ public class LoginController {
 
     public void exit() {
         System.exit(0);
+    }
+
+    /**
+     * NOTE: This might not work in some JDK versions,
+     * because of the class DatatypeConverter which is deprecated
+     * (try editing/removing VM options)
+     *
+     * @param string is the text to be converted
+     * @return the MD5 hash of the string
+     */
+    public String getMD5Hash(String string) {
+        String md5Hash = "";
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(string.getBytes());
+            byte[] digest = md.digest();
+            md5Hash = DatatypeConverter.printHexBinary(digest).toUpperCase();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return md5Hash;
     }
 
     /**
